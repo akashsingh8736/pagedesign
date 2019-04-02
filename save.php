@@ -1,17 +1,15 @@
 <?php
+require_once ("config.php");
+
 $first_name= $_POST["first_name"];
 $last_name=$_POST["last_name"];
 $user_name=$_POST["username"];
-$password=$_POST["Password"];
+$password=sha1($_POST["Password"]);
 
-$con=mysqli_connect("localhost","root","","designpage");
-if (!isset($con)) {
-	die("Database conection error");
-	exit();
-}
-$qry="insert into user set first_name='$first_name', last_name='$last_name',password='$password',user_name='$user_name';";
+$query =$conn->prepare ("INSERT INTO user (first_name, last_name , user_name , password) VALUES (?,?,?,?)");
+$query->bind_param("ssss", $first_name, $last_name, $user_name, $password);
+$query->execute();
 
-mysqli_query($con,$qry);
 
 ?>
 <!DOCTYPE html>
@@ -20,6 +18,6 @@ mysqli_query($con,$qry);
 	<title></title>
 </head>
 <body>
-<h3>  data is saved.For logine please <a href="akash.html"> click</a> here</h3>
+<h3>  data is saved.For logine please <a href="akash.php"> click</a> here</h3>
 </body>
 </html>
